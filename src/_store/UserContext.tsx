@@ -21,13 +21,14 @@ export const UserContext = createContext<UserContextProps>({
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
-
   const login = (user: User) => {
     localStorage.setItem('user', JSON.stringify(user));
     setUser(user);
   };
 
   const logout = () => {
+    console.log('logout')
+    localStorage.removeItem('user');
     setUser(null);
   };
   

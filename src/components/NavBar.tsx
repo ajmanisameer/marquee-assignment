@@ -1,11 +1,12 @@
-import { useCallback, useState } from 'react';
-import { Link  } from 'react-router-dom';
+import { useCallback, useState, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import tw from 'tailwind-styled-components';
 import Hamburger from 'hamburger-react';
 import LogoV2 from '../icons/LogoV2';
+import { UserContext } from '../_store/UserContext';
 
-
+// FaCheckCircle
 const Container = tw.nav`
   sticky
   z-20
@@ -99,45 +100,62 @@ const MenuContainer = tw.div`
 const NavBar = () => {
   const [active, setActive] = useState(false);
   const [hamburgerActive, setHamburgerActive] = useState(false);
+  const { logout } = useContext(UserContext);
+  const [user, setUser] = useState<string | null>(() => {
+    const storedUser = localStorage.getItem('user');
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
+
+  console.log(user)
 
   const handleClick = useCallback((toggled: boolean) => {
     setActive(toggled);
     setHamburgerActive(toggled);
   }, []);
 
-  return (  
+  const handleLogout = () => {
+    logout(); // Call the logout function to reset the user context
+  };
+
+  return (
     <Container>
-    <motion.div
-      className="flex"
-      whileHover={{ scale: 1.2 }}
-      whileTap={{
-        scale: 0.8,
-      }}
-    >
+      <motion.div
+        className="flex"
+        whileHover={{ scale: 1.2 }}
+        whileTap={{
+          scale: 0.8,
+        }}
+      >
         <LogoLink title="Nyte Lytes">
           <LogoV2 />
         </LogoLink>
-    </motion.div>
-    <MenuToggle
-      whileHover={{ scale: 1.2 }}
-      whileTap={{
-        scale: 0.8,
-      }}
-    >
-      <Hamburger size={18} onToggle={handleClick} toggled={hamburgerActive} />
-    </MenuToggle>
-    <MenuContainer className={`${active ? '' : 'hidden'}`}>
-      <MenuLinks>
-        <NavAnchor onClick={() => handleClick(false)}>
-          <Link to="/">Dashboard</Link>
-        </NavAnchor>
-        <NavAnchor  onClick={() => handleClick(false)}>
-        <Link to="/login">Login</Link>
-        </NavAnchor>
-      </MenuLinks>
-    </MenuContainer>
-  </Container>
+      </motion.div>
+      <MenuToggle
+        whileHover={{ scale: 1.2 }}
+        whileTap={{
+          scale: 0.8,
+        }}
+      >
+        <Hamburger size={18} onToggle={handleClick} toggled={hamburgerActive} />
+      </MenuToggle>
+      <MenuContainer className={`${active ? '' : 'hidden'}`}>
+        <MenuLinks>
+          <NavAnchor onClick={() => handleClick(false)}>
+            <Link to="/">Dashboard</Link>
+          </NavAnchor>
+          {user ? (
+            <NavAnchor onClick={handleLogout}>
+              <Link to="/">Logout</Link>
+            </NavAnchor>
+          ) : (
+            <NavAnchor onClick={() => handleClick(false)}>
+              <Link to="/login">Login</Link>
+            </NavAnchor>
+          )}
+        </MenuLinks>
+      </MenuContainer>
+    </Container>
   );
 }
- 
+
 export default NavBar;

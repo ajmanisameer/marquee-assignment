@@ -4,7 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from "react-router-dom";
-import { UserProvider } from './_store/user-context';
+import { UserProvider } from './_store/UserContext';
+import { TodoProvider } from './_store/TodoContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -12,11 +13,12 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <UserProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <TodoProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </TodoProvider>
     </UserProvider>
-
   </React.StrictMode>
 
 );

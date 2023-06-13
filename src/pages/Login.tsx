@@ -3,7 +3,7 @@ import { useCallback, useState, useContext } from "react";
 import { useNavigate } from 'react-router-dom';
 import Button from "../components/Button";
 import UserData from '../_mock/users.json'
-import { UserContext } from '../_store/user-context'
+import { UserContext } from '../_store/UserContext'
 import jwt from 'jsonwebtoken';
 const secretKey = 'your-secret-key'; 
 
@@ -17,17 +17,24 @@ const Login: React.FC = () => {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 
+    const sanitizedUsername = sanitizeInput(username);
+    const sanitizedPassword = sanitizeInput(password);
+
     // Perform authentication with username and password
-    const isAuthenticated = authenticateUser(username, password);
+    const isAuthenticated = authenticateUser(sanitizedUsername, sanitizedPassword);
     if (isAuthenticated) {
       const token = generateToken(username);
-      login({username: username, token: token})
+      login({username: sanitizedUsername, token: token})
       navigate('/');
     } else {
       alert('Invalid username or password');
     }
-
   }
+
+  const sanitizeInput = (input: string) => {
+    // Remove or escape any potentially malicious characters or sequences
+    return input.replace(/[^\w\s]/gi, '');
+  };
 
   const authenticateUser = (username: string, password: string) => {
     // Retrieve the users from the JSON file
