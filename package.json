@@ -11,15 +11,22 @@
     "@types/react": "^18.2.11",
     "@types/react-dom": "^18.2.4",
     "@types/styled-components": "^5.1.26",
+    "buffer": "^6.0.3",
+    "crypto": "npm:crypto-browserify",
     "framer-motion": "^10.12.16",
     "hamburger-react": "^2.5.0",
+    "jsonwebtoken": "8.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-jwt": "^1.2.0",
     "react-router-dom": "^6.12.1",
     "react-scripts": "5.0.1",
+    "stream": "npm:stream-browserify",
+    "stream-browserify": "^3.0.0",
     "styled-components": "^5.3.10",
     "tailwind-styled-components": "^2.2.0",
     "typescript": "^4.9.5",
+    "util": "^0.12.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -32,7 +39,11 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "env": {
+      "browser": true,
+      "node": true
+    }
   },
   "browserslist": {
     "production": [
@@ -47,6 +58,12 @@
     ]
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.2",
+    "process": "^0.11.10",
+    "react-error-overlay": "^6.0.9",
     "tailwindcss": "^3.3.2"
+  },
+  "browser": {
+    "crypto": false
   }
 }

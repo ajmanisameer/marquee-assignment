@@ -37,7 +37,7 @@ const MenuToggle = tw(motion.div)`
   hover:text-white
   outline-none
 `;
-const NavAnchor = tw.a`
+const NavAnchor = tw.div`
   md:w-auto
   w-full
   px-3
@@ -129,8 +129,7 @@ const NavBar = () => {
     <MenuContainer className={`${active ? '' : 'hidden'}`}>
       <MenuLinks>
         <NavAnchor onClick={() => handleClick(false)}>
-          <Link to="/dashboard">Dashboard</Link>
-          
+          <Link to="/">Dashboard</Link>
         </NavAnchor>
         <NavAnchor  onClick={() => handleClick(false)}>
         <Link to="/login">Login</Link>
