@@ -19,6 +19,8 @@ interface TodoContextProps {
   addSubtask: (todoId: number, title: string) => void;
   toggleTodo: (todoId: number) => void;
   toggleSubtask: (todoId: number, subtaskId: number) => void;
+  deleteTodo: (todoId: number) => void;
+  deleteSubtask: (todoId: number, subtaskId: number) => void;
 }
 
 export const TodoContext = createContext<TodoContextProps>({
@@ -27,7 +29,8 @@ export const TodoContext = createContext<TodoContextProps>({
   addSubtask: () => {},
   toggleTodo: () => {},
   toggleSubtask: () => {},
-
+  deleteTodo: () => {},
+  deleteSubtask: () => {},
 });
 
 export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -100,8 +103,28 @@ export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   };
 
+  const deleteTodo = (todoId: number) => {
+    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== todoId));
+  };
+
+  const deleteSubtask = (todoId: number, subtaskId: number) => {
+    setTodos((prevTodos) => {
+      return prevTodos.map((todo) => {
+        if (todo.id === todoId) {
+          return {
+            ...todo,
+            subtasks: todo.subtasks.filter(
+              (subtask) => subtask.id !== subtaskId
+            ),
+          };
+        }
+        return todo;
+      });
+    });
+  };
+
   return (
-    <TodoContext.Provider value={{ todos, addTodo, addSubtask, toggleTodo, toggleSubtask }}>
+    <TodoContext.Provider value={{ todos, addTodo, addSubtask, toggleTodo, toggleSubtask, deleteTodo, deleteSubtask }}>
       {children}
     </TodoContext.Provider>
   );

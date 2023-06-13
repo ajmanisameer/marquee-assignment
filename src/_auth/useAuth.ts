@@ -5,11 +5,13 @@ import { useNavigate } from 'react-router-dom';
 
 export const useAuth = () => {
   const { user } = useContext(UserContext);
+  const storedUser = localStorage.getItem('user')
+  console.log(storedUser)
+
   const navigate = useNavigate();
 
-
   useEffect(() => {
-    if (!user) {
+    if ( !storedUser && !user) {
       navigate('/login');
     }
   }, [user]);

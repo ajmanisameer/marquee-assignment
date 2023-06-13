@@ -1,16 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Dashboard from './pages/Dashboard';
-import Login from './pages/Login';
-import Page404 from './pages/Page404';
+import Dashboard from './components/Dashboard/Dashboard';
+import Login from './components/Login/Login';
+import Page404 from './components/UI/Page404';
 import { UserContext } from './_store/UserContext';
 import { useAuth } from './_auth/useAuth';
 
 const MainRoutes = () => {
   const User = useAuth();
+  const storedUser = localStorage.getItem('user')
   return (
     <Routes>
-      {User && (
+      { storedUser && (
         <Route path='/' element={<Dashboard />} />
       )}
       <Route path='/login' element={<Login />} />

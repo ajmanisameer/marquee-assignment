@@ -1,6 +1,17 @@
 import React, { useContext } from 'react';
-import { TodoContext } from '../_store/TodoContext';
+import { TodoContext } from '../../_store/TodoContext';
 import { FaCheckCircle } from "react-icons/fa";
+import { FaTimes } from 'react-icons/fa'; // Import the desired icon component
+import tw from 'tailwind-styled-components';
+
+const Input = tw.input`
+block w-full p-4 pl-10 text-sm text-stone-950 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500
+`;
+
+const Button = tw.button`
+text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800
+`;
+
 interface TodoProps {
   todo: {
     id: number;
@@ -16,7 +27,13 @@ interface TodoProps {
 
 const Todo: React.FC<TodoProps> = ({ todo }) => {
   const { addSubtask } = useContext(TodoContext);
-  const { toggleTodo, toggleSubtask } = useContext(TodoContext);
+  const {
+    toggleTodo,
+    toggleSubtask,
+    deleteTodo,
+    deleteSubtask,
+  } = useContext(TodoContext);
+
 
   const handleTodoToggle = (todoId: number) => {
     toggleTodo(todoId);
@@ -25,6 +42,15 @@ const Todo: React.FC<TodoProps> = ({ todo }) => {
   const handleSubtaskToggle = (todoId: number, subtaskId: number) => {
     toggleSubtask(todoId, subtaskId);
   };
+
+  const handleTodoDelete = (todoId: number) => {
+    deleteTodo(todoId);
+  };
+
+  const handleSubtaskDelete = (todoId: number, subtaskId: number) => {
+    deleteSubtask(todoId, subtaskId);
+  };
+
 
 
   const handleSubtaskSubmit = (
@@ -52,7 +78,7 @@ const Todo: React.FC<TodoProps> = ({ todo }) => {
   return (
     <div>
       <li>
-        <details >
+        <details>
           <summary
             className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
             <span className="flex gap-2">
@@ -65,6 +91,11 @@ const Todo: React.FC<TodoProps> = ({ todo }) => {
               <span className={todo.completed ? 'line-through' : ''} style={{ marginLeft: '0.5rem' }}>
                 {todo.title}
               </span>
+              <span className="flex-grow"></span>
+              <FaTimes
+                className="delete-icon mt-1 fill-red-500"
+                onClick={() => handleTodoDelete(todo.id)}
+              />
             </span>
             <svg className="w-5 h-5 text-gray-500 transition group-open:rotate-90" xmlns="http://www.w3.org/2000/svg"
               width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -76,8 +107,8 @@ const Todo: React.FC<TodoProps> = ({ todo }) => {
 
           </summary>
           {todo.subtasks.map((subtask) => (
-            <article className="px-4 pb-4">
-              <ul className="flex flex-col gap-1 pl-2">
+            <article className="pb-2">
+              <ul className="flex ml-10 gap-1 pl-2">
                 <li
                   key={subtask.id}
                   className={subtask.completed ? 'line-through' : ''}
@@ -88,15 +119,22 @@ const Todo: React.FC<TodoProps> = ({ todo }) => {
                     onChange={() => handleSubtaskToggle(todo.id, subtask.id)}
                   />
                   <span style={{ marginLeft: '0.5rem' }}>{subtask.title}</span>
+
                 </li>
+                <FaTimes
+                  className="delete-icon mt-1 ml-3 fill-red-500"
+                  onClick={() => handleSubtaskDelete(todo.id, subtask.id)}
+                />
                 {/* <li key={subtask.id}><a href="">{subtask.title}</a></li> */}
               </ul>
 
             </article>
           ))}
           <form onSubmit={(e) => handleSubtaskSubmit(e, todo.id)}>
-            <input type="text" name="subtaskTitle" placeholder="Enter Subtask" />
-            <button type="submit">Add Subtask</button>
+            <div className="relative md:mx-30">
+            <Input type="text" name="subtaskTitle" placeholder="Add subtask" required />
+            <Button type="submit" >Add Subtask</Button>
+            </div>
           </form>
         </details>
       </li>
@@ -107,17 +145,14 @@ const Todo: React.FC<TodoProps> = ({ todo }) => {
 
 const Todos: React.FC = () => {
   const { todos } = useContext(TodoContext);
-
   return (
     <div>
       <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Tasks</h2>
-
       <ul className="flex flex-col gap-2 max-w-[300px] mx-auto mt-12">
         {todos.map((todo) => (
           <Todo key={todo.id} todo={todo} />
         ))}
       </ul>
-
     </div>
   );
 };

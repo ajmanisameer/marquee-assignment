@@ -3,10 +3,9 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import tw from 'tailwind-styled-components';
 import Hamburger from 'hamburger-react';
-import LogoV2 from '../icons/LogoV2';
-import { UserContext } from '../_store/UserContext';
+import LogoV2 from '../../icons/LogoV2';
+import { UserContext } from '../../_store/UserContext';
 
-// FaCheckCircle
 const Container = tw.nav`
   sticky
   z-20
