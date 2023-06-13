@@ -13,6 +13,7 @@
     "@types/styled-components": "^5.1.26",
     "buffer": "^6.0.3",
     "crypto": "npm:crypto-browserify",
+    "dotenv": "^16.1.4",
     "framer-motion": "^10.12.16",
     "hamburger-react": "^2.5.0",
     "jsonwebtoken": "8.5.1",

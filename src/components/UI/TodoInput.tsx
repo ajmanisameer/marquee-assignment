@@ -5,10 +5,11 @@ interface InputProps {
   disabled?: boolean;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   label?: string;
+  name?: string;
   required?: true; // Added required prop
 }
 
-const Input: React.FC<InputProps> = ({ placeholder, value, type = "text", required, onChange, disabled, label }) => {
+const TodoInput: React.FC<InputProps> = ({ placeholder, value, type = "text", required, onChange, disabled, label }) => {
   return (
     <div className="w-full">
       {label && <p className="text-xl text-white font-semibold mb-2">{label}</p>}
@@ -19,21 +20,8 @@ const Input: React.FC<InputProps> = ({ placeholder, value, type = "text", requir
         placeholder={placeholder}
         type={type}
         className="
-          w-full
-          p-4 
-          text-lg 
-          bg-black 
-          border-2
-          border-neutral-800 
-          rounded-md
-          outline-none
-          text-white
-          focus:border-sky-500
-          focus:border-2
-          transition
-          disabled:bg-neutral-900
-          disabled:opacity-70
-          disabled:cursor-not-allowed
+block w-full p-4 pl-10 text-sm text-stone-950 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500
+         
         "
         required={required}
       />
@@ -41,4 +29,4 @@ const Input: React.FC<InputProps> = ({ placeholder, value, type = "text", requir
    );
 }
  
-export default Input;
+export default TodoInput;

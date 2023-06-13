@@ -67,6 +67,7 @@ export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   };
 
+  // strike through a task
   const toggleTodo = (todoId: number) => {
     setTodos((prevTodos) => {
       return prevTodos.map((todo) => {
@@ -81,6 +82,7 @@ export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   };
 
+  // strike through a subtask
   const toggleSubtask = (todoId: number, subtaskId: number) => {
     setTodos((prevTodos) => {
       return prevTodos.map((todo) => {
@@ -103,10 +105,12 @@ export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   };
 
+  // delete a complete todo
   const deleteTodo = (todoId: number) => {
     setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== todoId));
   };
 
+  // delete a subtask
   const deleteSubtask = (todoId: number, subtaskId: number) => {
     setTodos((prevTodos) => {
       return prevTodos.map((todo) => {

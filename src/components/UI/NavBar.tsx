@@ -1,5 +1,5 @@
 import { useCallback, useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import tw from 'tailwind-styled-components';
 import Hamburger from 'hamburger-react';
@@ -100,12 +100,12 @@ const NavBar = () => {
   const [active, setActive] = useState(false);
   const [hamburgerActive, setHamburgerActive] = useState(false);
   const { logout } = useContext(UserContext);
+  const navigate = useNavigate();
   const [user, setUser] = useState<string | null>(() => {
     const storedUser = localStorage.getItem('user');
     return storedUser ? JSON.parse(storedUser) : null;
   });
 
-  console.log(user)
 
   const handleClick = useCallback((toggled: boolean) => {
     setActive(toggled);
@@ -114,6 +114,7 @@ const NavBar = () => {
 
   const handleLogout = () => {
     logout(); // Call the logout function to reset the user context
+    navigate('/login');
   };
 
   return (

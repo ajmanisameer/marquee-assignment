@@ -1,8 +1,10 @@
 import React, { useContext } from 'react';
 import { TodoContext } from '../../_store/TodoContext';
-import { FaCheckCircle } from "react-icons/fa";
 import { FaTimes } from 'react-icons/fa'; // Import the desired icon component
 import tw from 'tailwind-styled-components';
+import TodoWrapper from '../UI/TodoWrapper';
+import SubtaskWrapper from '../UI/SubtaskWrapper';
+import TodoInput from '../UI/TodoInput';
 
 const Input = tw.input`
 block w-full p-4 pl-10 text-sm text-stone-950 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500
@@ -35,24 +37,29 @@ const Todo: React.FC<TodoProps> = ({ todo }) => {
   } = useContext(TodoContext);
 
 
+  // strike through a task
   const handleTodoToggle = (todoId: number) => {
     toggleTodo(todoId);
   };
 
+  // strike through a subtask
   const handleSubtaskToggle = (todoId: number, subtaskId: number) => {
     toggleSubtask(todoId, subtaskId);
   };
 
+  // delete a complete todo
   const handleTodoDelete = (todoId: number) => {
     deleteTodo(todoId);
   };
 
+  // delete a subtask
   const handleSubtaskDelete = (todoId: number, subtaskId: number) => {
     deleteSubtask(todoId, subtaskId);
   };
 
 
 
+  // create a subtask
   const handleSubtaskSubmit = (
     event: React.FormEvent<HTMLFormElement>,
     todoId: number
@@ -79,8 +86,7 @@ const Todo: React.FC<TodoProps> = ({ todo }) => {
     <div>
       <li>
         <details>
-          <summary
-            className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
+          <TodoWrapper>
             <span className="flex gap-2">
               {/* <FaCheckCircle className='mt-1' /> */}
               <input
@@ -97,18 +103,18 @@ const Todo: React.FC<TodoProps> = ({ todo }) => {
                 onClick={() => handleTodoDelete(todo.id)}
               />
             </span>
+            {/* Collapse todo ICON */}
             <svg className="w-5 h-5 text-gray-500 transition group-open:rotate-90" xmlns="http://www.w3.org/2000/svg"
               width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
               <path fill-rule="evenodd"
                 d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z">
               </path>
             </svg>
-
-
-          </summary>
+          </TodoWrapper>
+          {/* Subtasks */}
           {todo.subtasks.map((subtask) => (
-            <article className="pb-2">
-              <ul className="flex ml-10 gap-1 pl-2">
+            <SubtaskWrapper  key={subtask.id} >
+              <ul  className="flex ml-10 gap-1 pl-2">
                 <li
                   key={subtask.id}
                   className={subtask.completed ? 'line-through' : ''}
@@ -118,8 +124,7 @@ const Todo: React.FC<TodoProps> = ({ todo }) => {
                     checked={subtask.completed}
                     onChange={() => handleSubtaskToggle(todo.id, subtask.id)}
                   />
-                  <span style={{ marginLeft: '0.5rem' }}>{subtask.title}</span>
-
+                  <span key={subtask.id} style={{ marginLeft: '0.5rem' }}>{subtask.title}</span>
                 </li>
                 <FaTimes
                   className="delete-icon mt-1 ml-3 fill-red-500"
@@ -127,9 +132,9 @@ const Todo: React.FC<TodoProps> = ({ todo }) => {
                 />
                 {/* <li key={subtask.id}><a href="">{subtask.title}</a></li> */}
               </ul>
-
-            </article>
+            </SubtaskWrapper>
           ))}
+          {/* Add Subtask */}
           <form onSubmit={(e) => handleSubtaskSubmit(e, todo.id)}>
             <div className="relative md:mx-30">
             <Input type="text" name="subtaskTitle" placeholder="Add subtask" required />
@@ -138,7 +143,6 @@ const Todo: React.FC<TodoProps> = ({ todo }) => {
           </form>
         </details>
       </li>
-
     </div>
   );
 };
